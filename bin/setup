@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+required_major=3
+ruby_version=$(ruby --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+ruby_major=$(echo "$ruby_version" | cut -d. -f1)
+
+if [ -z "$ruby_version" ] || [ "$ruby_major" -lt "$required_major" ]; then
+  echo "Error: Ruby >= $required_major.1 required (found: ${ruby_version:-none})"
+  echo "Install via Homebrew: brew install ruby"
+  echo "Then add to your shell: export PATH=\"/opt/homebrew/opt/ruby/bin:\$PATH\""
+  exit 1
+fi
+
+echo "Ruby $ruby_version OK"
+bundle install
+echo "Setup complete. Run:"
+echo "  bundle exec bin/parse files/van-gogh-paintings.html"
+echo "  bundle exec rspec"
