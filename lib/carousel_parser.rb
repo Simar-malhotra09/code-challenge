@@ -39,7 +39,8 @@ class CarouselParser
       "extensions" => year_extensions(labels[1]),
       "link"       => normalize_link(anchor["href"]),
       "image"      => img ? @extractor.for_img(img) : nil
-    }.tap { |h| h.delete("image") if h["image"].nil? }
+    }.tap { |h| h.delete("extensions") if h["extensions"].nil? }
+     .tap { |h| h.delete("image")      if h["image"].nil? }
   end
 
   # Collects text from leaf nodes (nodes with no element children) under the
