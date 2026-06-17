@@ -34,6 +34,48 @@ RSpec.describe CarouselParser do
     end
   end
 
+  describe "De Niro movies carousel" do
+    let(:results) { described_class.new(File.read("#{FIXTURES}/../spec/fixtures/deniro-movies.html")).parse }
+
+    it "extracts 12 movies" do
+      expect(results.length).to eq(12)
+    end
+
+    it "first item is Taxi Driver (1976)" do
+      expect(results.first["name"]).to eq("Taxi Driver")
+      expect(results.first["extensions"]).to eq(["1976"])
+    end
+
+    it "every item has a name, link, and image" do
+      results.each do |r|
+        expect(r["name"]).to be_a(String)
+        expect(r["link"]).to start_with("https://www.google.com")
+        expect(r["image"]).not_to be_nil
+      end
+    end
+  end
+
+  describe "Shinkai books carousel" do
+    let(:results) { described_class.new(File.read("#{FIXTURES}/../spec/fixtures/shinkai-books.html")).parse }
+
+    it "extracts 12 books" do
+      expect(results.length).to eq(12)
+    end
+
+    it "first item is Your Name (2016)" do
+      expect(results.first["name"]).to eq("Your Name")
+      expect(results.first["extensions"]).to eq(["2016"])
+    end
+
+    it "every item has a name, link, and image" do
+      results.each do |r|
+        expect(r["name"]).to be_a(String)
+        expect(r["link"]).to start_with("https://www.google.com")
+        expect(r["image"]).not_to be_nil
+      end
+    end
+  end
+
   describe "item structure" do
     let(:html)    { File.read("#{FIXTURES}/van-gogh-paintings.html") }
     let(:results) { described_class.new(html).parse }
