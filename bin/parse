@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+require_relative "../lib/carousel_parser"
+
+path = ARGV[0]
+
+if path.nil? || path == "--help" || path == "-h"
+  warn "Usage: bin/parse <path-to-html-file>"
+  warn "       bin/parse files/van-gogh-paintings.html"
+  exit 1
+end
+
+unless File.exist?(path)
+  warn "Error: file not found: #{path}"
+  exit 1
+end
+
+results = CarouselParser.new(File.read(path)).parse
+puts JSON.pretty_generate(results)
